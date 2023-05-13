@@ -1,5 +1,6 @@
-from tkinter import Tk
+from tkinter import *
 
+from configs import Resolutions
 from models.utils.Dimension import Dimension
 
 
@@ -20,17 +21,17 @@ class GameEngine:
         self.window.mainloop()
 
     def dimensionGeometry(self):
-        valueRadioButton = Tk.IntVar()
+        OPTIONS = Resolutions.OPTIONS
 
-        Tk.Label(self.window,
-                 text="Dimenção",
-                 justify=Tk.LEFT,
-                 padx=20
-                 ).pack()
+        variable = StringVar(self.window)
+        variable.set(OPTIONS[0])
 
-        Tk.Radiobutton(self.window,
-                       text="700x720",
-                       padx=20,
-                       variable=valueRadioButton,
-                       value=1
-                       ).pack(anchor=Tk.W)
+        def show_selected_option():
+            print("Opção selecionada:", variable.get())
+
+        Radiobutton(self.window, text=OPTIONS[0], variable=variable, value=OPTIONS[0], command=show_selected_option).pack()
+        Radiobutton(self.window, text=OPTIONS[1], variable=variable, value=OPTIONS[1], command=show_selected_option).pack()
+        Radiobutton(self.window, text=OPTIONS[2], variable=variable, value=OPTIONS[2], command=show_selected_option).pack()
+
+
+
