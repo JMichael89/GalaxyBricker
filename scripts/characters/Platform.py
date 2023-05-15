@@ -7,7 +7,6 @@ from scripts.models.Element import Element
 
 class PlatformType(Enum):
     animate1 = "platform1.png"
-    animate2 = "plataforma_animate1.gif"
 
 
 class Platform(Element):
