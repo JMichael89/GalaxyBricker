@@ -1,10 +1,9 @@
-import os
 from random import random
-from turtle import delay
 
 from scripts.characters.Ball import Ball, BallType
+from scripts.characters.Block import Block, BlockType
 from scripts.characters.Platform import Platform, PlatformType
-from scripts.models.Collider import collision_check
+from scripts.models.Collider import collision_check, collider_bloc_ball
 from scripts.utils.Vector import Vector
 from scripts.utils.Window import Window
 from scripts.utils.Dimension import Dimension
@@ -19,15 +18,39 @@ class GameEngine:
         self.windows = Window(pygame, "Galaxy Bricker", Dimension(780, 600))
 
     def run(self):
-        ball1 = Ball(Vector(10, 100), Dimension(15, 15))
+        ball1 = Ball(dimension=Dimension(20, 20))
         ball1.select_ball(BallType.basic_white)
+
+        '''
+        # Tsts A1
+        ball1.set_position(290, 500)
+        ball1.set_position(490, 500)
+        ball1.set_speed(0, -0.5)
+        
+        # Tests A2
+        ball1.set_position(600, 190)
+        ball1.set_position(600, 390)
+        ball1.set_speed(-0.5, 0)
+        
+        # Tests A3
+        ball1.set_position(290, 0)
+        ball1.set_position(490, 0)
+        ball1.set_speed(0, 0.5)
+        
+        # Tests A4
+        ball1.set_position(0, 190)
+        ball1.set_position(0, 390)
+        ball1.set_speed(0.5, 0)
+        '''
+
+        # Tests All:
+        ball1.set_position(0, 0)
         ball1.set_speed(random(), random())
 
-        ball2 = Ball(Vector(100, 80), Dimension(15, 15))
-        ball2.select_ball(BallType.basic_white)
-        ball2.set_speed(random(), random())
+        block = Block(Vector(300, 200), Dimension(200, 200))
+        block.select_bloc(BlockType.b1)
 
-        self.windows.add_element(ball1, ball2)
+        self.windows.add_element(ball1, block)
 
         game_is_active = True
         while game_is_active:
@@ -36,10 +59,12 @@ class GameEngine:
                     game_is_active = False
 
             self.windows.update()
-            update(self.windows, ball1, ball2)
-            if collision_check(ball1, ball2):
+            update(self.windows, ball1, block)
+            if collision_check(ball1, block):
                 ball1.speed.multiplication(0)
-                ball2.speed.multiplication(0)
+                print("Plataforma", block.position, block.dimension)
+                print("Bola      ", ball1.position, ball1.dimension)
+                print("area de colisão:", collider_bloc_ball(block, ball1))
 
         pygame.quit()
 
@@ -55,4 +80,3 @@ def update(windows, *elements):
             element.speed.y *= -1
         elif element.position.y < 0:
             element.speed.y *= -1
-
