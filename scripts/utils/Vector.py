@@ -1,3 +1,6 @@
+import math
+
+
 class Vector:
     def __init__(self, x=0, y=0):
         self.x = x
@@ -16,6 +19,11 @@ class Vector:
     def multiplication(self, mul):
         self.x *= mul
         self.y *= mul
+
+    def angle(self):
+        angle_rad = math.atan2(self.y, self.x)
+        angle_deg = math.degrees(angle_rad)
+        return angle_deg
 
     def __str__(self):
         return f"Vector [ x={self.x}, y={self.y} ]"

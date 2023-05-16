@@ -1,4 +1,4 @@
-from random import random
+from random import random, randrange
 
 from scripts.characters.Ball import Ball, BallType
 from scripts.characters.Block import Block, BlockType
@@ -20,37 +20,51 @@ class GameEngine:
     def run(self):
         ball1 = Ball(dimension=Dimension(20, 20))
         ball1.select_ball(BallType.basic_white)
-
-        '''
-        # Tsts A1
-        ball1.set_position(290, 500)
-        ball1.set_position(490, 500)
-        ball1.set_speed(0, -0.5)
-        
-        # Tests A2
-        ball1.set_position(600, 190)
-        ball1.set_position(600, 390)
-        ball1.set_speed(-0.5, 0)
-        
-        # Tests A3
-        ball1.set_position(290, 0)
-        ball1.set_position(490, 0)
-        ball1.set_speed(0, 0.5)
-        
-        # Tests A4
-        ball1.set_position(0, 190)
-        ball1.set_position(0, 390)
-        ball1.set_speed(0.5, 0)
-        '''
-
-        # Tests All:
         ball1.set_position(0, 0)
         ball1.set_speed(random(), random())
 
-        block = Block(Vector(300, 200), Dimension(200, 200))
-        block.select_bloc(BlockType.b1)
+        ball2 = Ball(dimension=Dimension(20, 20))
+        ball2.select_ball(BallType.basic_white)
+        ball2.set_position(0, 579)
+        ball2.set_speed(random(), random())
 
-        self.windows.add_element(ball1, block)
+        ball3 = Ball(dimension=Dimension(20, 20))
+        ball3.select_ball(BallType.basic_white)
+        ball3.set_position(759, 0)
+        ball3.set_speed(random(), random())
+
+        ball4 = Ball(dimension=Dimension(20, 20))
+        ball4.select_ball(BallType.basic_white)
+        ball4.set_position(759, 579)
+        ball4.set_speed(random(), random())
+
+        block1 = Block(Vector(randrange(0, 700), randrange(0, 520)), Dimension(randrange(20, 100), randrange(20, 100)))
+        block1.select_bloc(BlockType.b1)
+
+        block2 = Block(Vector(randrange(0, 700), randrange(0, 520)), Dimension(randrange(20, 100), randrange(20, 100)))
+        block2.select_bloc(BlockType.b1)
+
+        block3 = Block(Vector(randrange(0, 700), randrange(0, 520)), Dimension(randrange(20, 100), randrange(20, 100)))
+        block3.select_bloc(BlockType.b1)
+
+        block4 = Block(Vector(randrange(0, 700), randrange(0, 520)), Dimension(randrange(20, 100), randrange(20, 100)))
+        block4.select_bloc(BlockType.b1)
+
+        block5 = Block(Vector(randrange(0, 700), randrange(0, 520)), Dimension(randrange(20, 100), randrange(20, 100)))
+        block5.select_bloc(BlockType.b1)
+
+        block6 = Block(Vector(randrange(0, 700), randrange(0, 520)), Dimension(randrange(20, 100), randrange(20, 100)))
+        block6.select_bloc(BlockType.b1)
+
+        block7 = Block(Vector(randrange(0, 700), randrange(0, 520)), Dimension(randrange(20, 100), randrange(20, 100)))
+        block7.select_bloc(BlockType.b1)
+
+        block8 = Block(Vector(randrange(0, 700), randrange(0, 520)), Dimension(randrange(20, 100), randrange(20, 100)))
+        block8.select_bloc(BlockType.b1)
+
+
+
+        self.windows.add_element(ball1, ball2, ball3, ball4, block1, block2, block3, block4, block5, block6, block7, block8)
 
         game_is_active = True
         while game_is_active:
@@ -59,12 +73,12 @@ class GameEngine:
                     game_is_active = False
 
             self.windows.update()
-            update(self.windows, ball1, block)
-            if collision_check(ball1, block):
-                ball1.speed.multiplication(0)
-                print("Plataforma", block.position, block.dimension)
-                print("Bola      ", ball1.position, ball1.dimension)
-                print("area de colisão:", collider_bloc_ball(block, ball1))
+            update(self.windows, ball1, ball2, ball3, ball4, block1, block2, block3, block4, block5, block6, block7, block8)
+
+            for block in [block1, block2, block3, block4, block5, block6, block7, block8]:
+                for ball in [ball1, ball2, ball3, ball4]:
+                    if collision_check(ball, block):
+                        print("area de colisão:", collider_bloc_ball(block, ball))
 
         pygame.quit()
 

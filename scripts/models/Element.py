@@ -5,7 +5,7 @@ from scripts.utils.Vector import Vector
 
 
 class Element:
-    def __init__(self, position=None, dimension=None, image=None):
+    def __init__(self, position: object = None, dimension: object = None, image: object = None) -> object:
         self.position = position if position else Vector()
         self.dimension = dimension if dimension else Dimension()
         self.image = image if image else None
