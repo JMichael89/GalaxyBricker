@@ -19,8 +19,12 @@ class Vector:
     def multiplication(self, mul):
         self.x *= mul
         self.y *= mul
+        return self
 
-    def angle(self):
+    def __mul__(self, x):
+        return Vector(self.x * 2, self.y * 2)
+
+    def get_angle(self):
         angle_rad = math.atan2(self.y, self.x)
         angle_deg = math.degrees(angle_rad)
         return angle_deg

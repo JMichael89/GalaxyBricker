@@ -1,10 +1,6 @@
-class Dimension:
-    def __init__(self, width=0, height=0):
-        self.width = width
-        self.height = height
+from scripts.utils.Vector import Vector
 
-    def __str__(self):
-        return f"Dimension [ width={self.width}, height={self.height} ]"
 
+class Dimension(Vector):
     def get_geometry(self):
-        return f"{self.width}x{self.height}"
+        return f"{self.x}x{self.y}"

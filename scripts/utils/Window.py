@@ -11,7 +11,7 @@ class Window:
         self.dimension = dimension
 
         self.display = instance.display
-        self.paint = self.display.set_mode((dimension.width, dimension.height))
+        self.paint = self.display.set_mode((dimension.x, dimension.y))
         pygame.display.set_caption("Galaxy Bricker")
         self.elements = []
 

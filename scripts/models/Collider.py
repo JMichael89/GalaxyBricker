@@ -1,58 +1,48 @@
+import math
+
+from scripts.characters.Ball import Ball
 from scripts.models.Element import Element
 from scripts.utils.Vector import Vector
 
 
-def collision_check(e1: Element, e2: Element):
-    if (e1.position.x + e1.dimension.width) < e2.position.x or e1.position.x > (e2.position.x + e2.dimension.width):
+def check_collision(e1: Element, e2: Element):
+    if (e1.position.x + e1.dimension.x) <= e2.position.x or e1.position.x >= (e2.position.x + e2.dimension.x):
         return False
-    if (e1.position.y + e1.dimension.height) < e2.position.y or e1.position.y > (e2.position.y + e2.dimension.height):
+    if (e1.position.y + e1.dimension.y) <= e2.position.y or e1.position.y >= (e2.position.y + e2.dimension.y):
         return False
     return True
 
 
-def collider_bloc_ball_update(bloc: Element, ball: Element):
-    forca_reacao = None
-    intersection_area = ""
-    if ball.position.x <= bloc.position.x + bloc.dimension.width and \
-            ball.position.x + ball.dimension.width >= bloc.position.x:
-        if ball.position.y <= bloc.position.y + bloc.dimension.height:
-            intersection_area = "em baixo"
-        else:
-            intersection_area = "em cima"
-    else:
-        if ball.position.y :
-            ...
+def check_external_collider(bloc: Element, ball: Ball):
+    intersection_area = []
+    if bloc.position.y - ball.get_radius() <= ball.get_center().y < bloc.position.y + bloc.get_height() + ball.get_height():
+        if bloc.position.x - ball.get_radius() <= ball.get_center().x < bloc.position.x:
+            intersection_area.append("Left")
 
+        elif bloc.position.x + bloc.get_width() < ball.get_center().x <= bloc.position.x + bloc.get_width() + ball.get_radius():
+            intersection_area.append("Right")
 
-def collider_bloc_ball(bloc: Element, ball: Element):
-    forca_reacao = Vector(0, 0)
-    intersection_area = ""
-    if (ball.position.y + 1 >= bloc.position.y + bloc.dimension.height) and \
-            (ball.position.x >= bloc.position.x - (ball.dimension.width / 2)) and \
-            (ball.position.x <= bloc.position.x + bloc.dimension.width - (ball.dimension.width / 2)):
-        ball.speed.y *= -1
-        intersection_area = "A1"
+    if bloc.position.x - ball.get_radius() <= ball.get_center().x < bloc.position.x + bloc.get_width() + ball.get_width():
+        if bloc.position.y - ball.get_radius() <= ball.get_center().y < bloc.position.y:
+            intersection_area.append("Top")
 
-    elif (ball.position.x + 1 >= bloc.position.x + bloc.dimension.width) and \
-            (ball.position.y >= bloc.position.y - (ball.dimension.height / 2)) and \
-            (ball.position.y <= bloc.position.y + bloc.dimension.height - (ball.dimension.height / 2)):
-        ball.speed.x *= -1
-        intersection_area = "A2"
+        elif bloc.position.y + bloc.get_height() < ball.get_center().y <= bloc.position.y + bloc.get_height() + ball.get_radius():
+            intersection_area.append("Down")
+            print(intersection_area)
 
-    elif (ball.position.y + ball.dimension.height - 1 <= bloc.position.y) and \
-            (ball.position.x <= bloc.position.x + bloc.dimension.width - (ball.dimension.width / 2)) and \
-            (ball.position.x >= bloc.position.x - (ball.dimension.width / 2)):
-        ball.speed.y *= -1
-        intersection_area = "A3"
+    if intersection_area.__len__() == 2:
+        tratar_colisao_quina_bloco(bloc, ball, intersection_area)
+        ...
 
-    elif (ball.position.x + ball.dimension.width - 1 <= bloc.position.x) and \
-            (ball.position.y >= bloc.position.y - (ball.dimension.height / 2)) and \
-            (ball.position.y <= bloc.position.y + bloc.dimension.height - (ball.dimension.height / 2)):
-        ball.speed.x *= -1
-        intersection_area = "A4"
-    else:
-        ball.speed.x *= -1
-        ball.speed.y *= -1
-        intersection_area = "E"
+    elif intersection_area.__len__() == 1:
+        if intersection_area[0] == "Top" or intersection_area[0] == "Down":
+            ball.speed.y *= -1
+        if intersection_area[0] == "Left" or intersection_area[0] == "Right":
+            ball.speed.x *= -1
 
     return intersection_area
+
+
+def tratar_colisao_quina_bloco(bloc: Element, ball: Ball, intersection_area):
+    ...
+

@@ -15,3 +15,6 @@ class Ball(Element):
     def select_ball(self, style: Enum):
         image = pygame.image.load("files/graphics/characters/"+style.value)
         self.update_image(image)
+
+    def get_radius(self):
+        return self.dimension.x / 2

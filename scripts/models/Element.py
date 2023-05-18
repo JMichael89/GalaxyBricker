@@ -5,7 +5,7 @@ from scripts.utils.Vector import Vector
 
 
 class Element:
-    def __init__(self, position: object = None, dimension: object = None, image: object = None) -> object:
+    def __init__(self, position: Vector = None, dimension: Dimension = None, image: pygame.image = None):
         self.position = position if position else Vector()
         self.dimension = dimension if dimension else Dimension()
         self.image = image if image else None
@@ -13,6 +13,20 @@ class Element:
         self.acceleration = Vector()
         self.speed_max = 0
         self.speed_min = 0
+
+    def get_center(self):
+        center_x = self.position.x + (self.dimension.x / 2)
+        center_y = self.position.y + (self.dimension.y / 2)
+        return Vector(center_x, center_y)
+
+    def get_position(self):
+        return self.position.x, self.position.y
+
+    def get_width(self):
+        return self.dimension.x
+
+    def get_height(self):
+        return self.dimension.y
 
     def update(self):
         if self.acceleration != 0:
@@ -22,7 +36,7 @@ class Element:
             self.position += self.speed
 
     def update_image(self, image):
-        self.image = pygame.transform.scale(image, (self.dimension.width, self.dimension.height))
+        self.image = pygame.transform.scale(image, (self.dimension.x, self.dimension.y))
 
     def set_position(self, x, y):
         self.position = Vector(x, y)
