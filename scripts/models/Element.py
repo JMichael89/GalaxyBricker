@@ -9,8 +9,8 @@ class Element:
         self.position = position if position else Vector()
         self.dimension = dimension if dimension else Dimension()
         self.image = image if image else None
-        self.speed = Vector()
-        self.acceleration = Vector()
+        self.direction = Vector()
+        self.speed = 0
         self.speed_max = 0
         self.speed_min = 0
 
@@ -29,11 +29,9 @@ class Element:
         return self.dimension.y
 
     def update(self):
-        if self.acceleration != 0:
-            self.speed += self.acceleration
-
         if self.speed != 0:
-            self.position += self.speed
+            self.position.x += self.speed * self.direction.x
+            self.position.y += self.speed * self.direction.y
 
     def update_image(self, image):
         self.image = pygame.transform.scale(image, (self.dimension.x, self.dimension.y))
@@ -45,20 +43,22 @@ class Element:
         self.dimension = Dimension(width, height)
 
         if self.image:
-            self.image = pygame.transform.scale(self.image, (self.dimension.width, self.dimension.height))
+            self.image = pygame.transform.scale(self.image, (self.dimension.x, self.dimension.y))
 
-    def set_speed(self, x, y):
-        self.speed = Vector(x, y)
+    def set_speed(self, speed):
+        self.speed = speed
 
-    def set_acceleration(self, x, y):
-        self.acceleration = Vector(x, y)
+    def set_direction(self, x, y):
+        if x > 1 or x < -1 or y > 1 or y < -1:
+            raise Exception("direção deve ser entre -1 e 1")
+
+        self.direction = Vector(x, y)
 
     def __str__(self):
-        return f"Element [ "\
+        return f"Element [ " \
                f"position: {self.position}, " \
                f"dimension: {self.dimension}, " \
                f"speed: {self.speed}, " \
-               f"acceleration: {self.acceleration}, " \
                f"speed_max: {self.speed_max}, " \
                f"speed_min: {self.speed_min}, " \
                f"image: {self.image} ]"
