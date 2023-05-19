@@ -31,7 +31,6 @@ def check_external_collider(bloc: Element, ball: Ball):
 
     if intersection_area.__len__() == 1:
         collider = intersection_area[0]
-        print(collider)
 
         if collider == "Top" or collider == "Down":
             ball.direction.y *= -1
@@ -44,48 +43,45 @@ def check_external_collider(bloc: Element, ball: Ball):
         collider = collide_corner(bloc, ball, intersection_area)
 
         if collider:
-            print(collider)
             return collider
 
 
 def collide_corner(bloc: Element, ball: Ball, intersection_area):
     collider = None
-    cornner = None
-    cornner_centerball = None
+    corner = None
 
     if intersection_area[1] == "Down":
         if intersection_area[0] == "Right":
-            cornner = Vector(bloc.position.x + bloc.get_width(), bloc.position.y + bloc.get_height())
-            cornner_centerball = distance_between(cornner, ball.get_center())
+            corner = Vector(bloc.position.x + bloc.get_width(), bloc.position.y + bloc.get_height())
+            distance_to_center = distance_between(corner, ball.get_center())
 
-            if ball.get_radius() >= cornner_centerball:
+            if ball.get_radius() >= distance_to_center:
                 collider = "Down/Right"
 
         else:
-            cornner = Vector(bloc.position.x, bloc.position.y + bloc.get_height())
-            cornner_centerball = distance_between(cornner, ball.get_center())
+            corner = Vector(bloc.position.x, bloc.position.y + bloc.get_height())
+            distance_to_center = distance_between(corner, ball.get_center())
 
-            if ball.get_radius() >= cornner_centerball:
+            if ball.get_radius() >= distance_to_center:
                 collider = "Down/Left"
 
     elif intersection_area[1] == "Top":
         if intersection_area[0] == "Right":
-            cornner = Vector(bloc.position.x + bloc.get_width(), bloc.position.y)
-            cornner_centerball = distance_between(cornner, ball.get_center())
+            corner = Vector(bloc.position.x + bloc.get_width(), bloc.position.y)
+            distance_to_center = distance_between(corner, ball.get_center())
 
-            if ball.get_radius() >= cornner_centerball:
+            if ball.get_radius() >= distance_to_center:
                 collider = "Top/Right"
 
         else:
-            cornner = Vector(bloc.position.x, bloc.position.y)
-            cornner_centerball = distance_between(cornner, ball.get_center())
+            corner = Vector(bloc.position.x, bloc.position.y)
+            distance_to_center = distance_between(corner, ball.get_center())
 
-            if ball.get_radius() >= cornner_centerball:
+            if ball.get_radius() >= distance_to_center:
                 collider = "Top/Left"
 
     if collider:
-        print(collider)
-        test(ball, cornner)
+        get_direction_result(ball, corner)
         return collider
 
 
@@ -99,40 +95,9 @@ def distance_between(point1: Vector, point2: Vector):
     return distance
 
 
-def alterar_direcao_velocidade_bola(corner: Vector, ball_center: Vector, ball_speed: Vector, d):
-    quina_x = corner.x
-    quina_y = corner.y
-    bola_centro_x = ball_center.x
-    bola_centro_y = ball_center.y
-    velocidade_x = ball_speed.x
-    velocidade_y = ball_speed.y
-
-    vetor_quina = (quina_x - bola_centro_x, quina_y - bola_centro_y)
-    comprimento_vetor_quina = d
-    direcao_quina = (vetor_quina[0] / comprimento_vetor_quina, vetor_quina[1] / comprimento_vetor_quina)
-
-    produto_escalar = direcao_quina[0] * velocidade_x + direcao_quina[1] * velocidade_y
-
-    reflexao_x = -1 * produto_escalar * direcao_quina[0] - velocidade_x
-    reflexao_y = -1 * produto_escalar * direcao_quina[1] - velocidade_y
-    reflexao = Vector(reflexao_x, reflexao_y)
-
-    return reflexao
-
-
-def test(ball: Ball, cornner: Vector):
-    print("Tests:")
-    print("cornner          :", cornner)
-    print("ball.center      :", ball.get_center())
-    print("ball.radius      :", ball.get_radius())
-
-    direction_x = (ball.get_center().x - cornner.x)/ball.get_radius()
-    direction_y = (ball.get_center().y - cornner.y)/ball.get_radius()
+def get_direction_result(ball: Ball, corner: Vector):
+    direction_x = (ball.get_center().x - corner.x) / ball.get_radius()
+    direction_y = (ball.get_center().y - corner.y) / ball.get_radius()
     direction = Vector(direction_x, direction_y)
-
-    print("direction_x         :", direction_x)
-    print("direction_y         :", direction_y)
-    print("ball.speed          :", ball.speed)
-    print("direction           :", direction)
 
     ball.direction = direction

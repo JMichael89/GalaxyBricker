@@ -28,3 +28,7 @@ class Window:
     def add_element(self, *elements):
         for element in elements:
             self.elements.append(element)
+
+    def remove_element(self, *elements):
+        for element in elements:
+            self.elements.remove(element)

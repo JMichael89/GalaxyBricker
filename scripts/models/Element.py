@@ -11,7 +11,7 @@ class Element:
         self.image = image if image else None
         self.direction = Vector()
         self.speed = 0
-        self.speed_max = 0
+        self.speed_max = 1
         self.speed_min = 0
 
     def get_center(self):

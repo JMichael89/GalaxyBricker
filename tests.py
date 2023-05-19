@@ -1,42 +1,38 @@
-from scripts.models.Element import Element
-from scripts.utils.Dimension import Dimension
-from scripts.utils.Vector import Vector
+import pygame
+import time
 
-element = Element(Vector(0, 0), Dimension(10, 10))
-center = Vector(element.position + (element.dimension * 2))
-print(element.dimension * 2)
-print(element.dimension)
+# Inicialização do Pygame
+pygame.init()
 
-'''
-        # Teste Randon
-        ball_test = Ball(dimension=Dimension(20, 20))
-        ball_test.select_ball(BallType.basic_white)
-        ball_test.set_position(0, 0)
-        ball_test.set_speed(random(), random())
+# Configurações do jogo
+largura_tela = 800
+altura_tela = 600
+tela = pygame.display.set_mode((largura_tela, altura_tela))
+pygame.display.set_caption("Exemplo de Medição e Controle de FPS")
 
-        block_test = Block(Vector(randrange(0, 700), randrange(0, 520)), Dimension(randrange(20, 100), randrange(20, 100)))
-        block_test.select_bloc(BlockType.b1)
-        
-        # Tests A1
-        ball_test.set_position(290, 500)
-        ball_test.set_position(490, 500)
-        ball_test.set_speed(0, -0.5)
+# Variáveis de controle do FPS
+fps_alvo = 60  # FPS desejado
+clock = pygame.time.Clock()
 
-        # Tests A2
-        ball_test.set_position(600, 190)
-        ball_test.set_position(600, 390)
-        ball_test.set_speed(-0.5, 0)
+# Loop principal do jogo
+running = True
+while running:
+    # Limitar a taxa de quadros por segundo
+    clock.tick(fps_alvo)
 
-        # Tests A3
-        ball_test.set_position(290, 0)
-        ball_test.set_position(490, 0)
-        ball_test.set_speed(0, 0.5)
+    # Processamento de eventos
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
 
-        # Tests A4
-        ball_test.set_position(0, 190)
-        ball_test.set_position(0, 390)
-        ball_test.set_speed(0.5, 0)
-        
-        block_test = Block(Vector(300, 200), Dimension(200, 200))
-        block_test.select_bloc(BlockType.b1)
-        '''
+    # Lógica do jogo
+    # ...
+
+    # Renderização do jogo
+    tela.fill((0, 0, 0))
+    # ...
+
+    pygame.display.flip()
+
+# Encerramento do Pygame
+pygame.quit()

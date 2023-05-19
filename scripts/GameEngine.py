@@ -2,6 +2,7 @@ from random import random, randrange
 
 from scripts.characters.Ball import Ball, BallType
 from scripts.characters.Block import Block, BlockType
+from scripts.characters.Platform import Platform, PlatformType
 from scripts.models.Collider import check_collision, check_external_collider
 from scripts.utils.Vector import Vector
 from scripts.utils.Window import Window
@@ -14,62 +15,95 @@ class GameEngine:
     def __init__(self):
         self.pygame = pygame
         self.pygame.init()
-        self.windows = Window(pygame, "Galaxy Bricker", Dimension(1200, 700))
+        self.windows = Window(pygame, "Galaxy Bricker", Dimension(800, 600))
 
     def run(self):
 
-        tests = "true"
-        ball_test = Ball(dimension=Dimension(100, 100))
-        ball_test.select_ball(BallType.basic_white)
-        ball_test.set_speed(1)
+        balls = []
+        for x in range(1):
+            balls.append(generate_ball())
 
-        block_test = Block()
-        block_test.select_bloc(BlockType.b1)
+        blocks = []
+        for x in range(0):
+            blocks.append(generate_bloc(self.windows.dimension))
 
-        # Tests A2
-        ball_test.set_position(100, 100)
-        ball_test.set_position(340, 200)
-        ball_test.set_direction(0, -1)
+        platform = generate_platform(self.windows.dimension, balls[0])
 
-        block_test = Block(Vector(400, 0), Dimension(200, 50))
-        block_test.select_bloc(BlockType.b1)
-
-        self.windows.add_element(ball_test, block_test)
+        self.windows.add_element(*balls, *blocks, platform)
 
         game_is_active = True
         while game_is_active:
+
+            keys = pygame.key.get_pressed()
+            platform.direction.x = 0
+
+            if keys[pygame.K_LEFT]:
+                platform.direction.x = -1
+            if keys[pygame.K_RIGHT]:
+                platform.direction.x = 1
+            if keys[pygame.K_UP]:
+                platform.throw_ball()
+
             for evento in pygame.event.get():
                 if evento.type == pygame.QUIT:
                     game_is_active = False
 
+            update_elements(self.windows, balls, blocks, platform)
             self.windows.update()
-
-            if tests == "true":
-                for block in [block_test]:
-                    for ball in [ball_test]:
-                        if check_collision(block, ball):
-                            if check_external_collider(block, ball):
-                                #print("Break!!!")
-                                #print("ball  :", ball.position)
-                                #print("block :", block.position)
-
-                                #tests = "break"
-                                #ball.speed.multiplication(0)
-                                ...
-
-            update(self.windows, ball_test, block_test)
 
         pygame.quit()
 
 
-def update(windows, *elements):
-    for element in elements:
-        if (element.position.x + element.dimension.x) >= windows.dimension.x:
-            element.direction.x *= -1
-        elif element.position.x < 0:
-            element.direction.x *= -1
+def update_elements(windows, balls, blocks, platform):
+    for block in [*blocks, platform]:
+        for ball in [*balls]:
+            if check_collision(block, ball):
+                check_external_collider(block, ball)
 
-        if (element.position.y + element.dimension.y) >= windows.dimension.y:
-            element.direction.y *= -1
-        elif element.position.y < 0:
-            element.direction.y *= -1
+    for ball in balls:
+        if (ball.position.x + ball.dimension.x) >= windows.dimension.x:
+            ball.direction.x *= -1
+        elif ball.position.x < 0:
+            ball.direction.x *= -1
+
+        if ball.position.y >= windows.dimension.y:
+            balls.remove(ball)
+            windows.remove_element(ball)
+        elif ball.position.y < 0:
+            ball.direction.y *= -1
+
+    if (platform.position.x + platform.dimension.x) >= windows.dimension.x:
+        platform.position.x = windows.dimension.x - platform.dimension.x
+    elif platform.position.x < 0:
+        platform.position.x = 0
+
+    if balls.__len__() == 0:
+        ball = generate_ball()
+        platform.update_ball(ball)
+        balls.append(ball)
+        windows.add_element(ball)
+
+
+def generate_ball():
+    raio = 30
+    ball = Ball(dimension=Dimension(raio, raio))
+    ball.select_ball(BallType.basic_white)
+    ball.speed_max = 0.5
+    return ball
+
+
+def generate_bloc(window_size: Vector):
+    block = Block(dimension=Dimension(20, 20))
+    block.select_bloc(BlockType.b1)
+
+    block.set_position(random() * window_size.x - 100, random() * window_size.y - 100)
+    return block
+
+
+def generate_platform(window_size: Vector, ball):
+    platform = Platform(dimension=Dimension(120, 15), ball=ball)
+    platform.select_platform(PlatformType.animate1)
+    platform.set_speed(1)
+
+    platform.set_position(window_size.x / 2 - platform.get_width() / 2, window_size.y - 2 * platform.get_height())
+    return platform
