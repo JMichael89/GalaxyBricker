@@ -34,8 +34,10 @@ def check_external_collider(bloc: Element, ball: Ball):
 
         if collider == "Top" or collider == "Down":
             ball.direction.y *= -1
+            ball.direction.x += bloc.direction.x * 0.25
         if collider == "Left" or collider == "Right":
             ball.direction.x *= -1
+            ball.direction.y += bloc.direction.y * 0.25
 
         return collider
 

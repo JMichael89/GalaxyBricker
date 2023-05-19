@@ -28,22 +28,10 @@ class GameEngine:
             blocks.append(generate_bloc(self.windows.dimension))
 
         platform = generate_platform(self.windows.dimension, balls[0])
-
         self.windows.add_element(*balls, *blocks, platform)
 
         game_is_active = True
         while game_is_active:
-
-            keys = pygame.key.get_pressed()
-            platform.direction.x = 0
-
-            if keys[pygame.K_LEFT]:
-                platform.direction.x = -1
-            if keys[pygame.K_RIGHT]:
-                platform.direction.x = 1
-            if keys[pygame.K_UP]:
-                platform.throw_ball()
-
             for evento in pygame.event.get():
                 if evento.type == pygame.QUIT:
                     game_is_active = False
@@ -55,6 +43,20 @@ class GameEngine:
 
 
 def update_elements(windows, balls, blocks, platform):
+    keys = pygame.key.get_pressed()
+    platform.direction.x = 0
+
+    if keys[pygame.K_LEFT]:
+        if platform.position.x >= 0:
+            platform.direction.x = -1
+
+    if keys[pygame.K_RIGHT]:
+        if (platform.position.x + platform.dimension.x) <= windows.dimension.x:
+            platform.direction.x = 1
+
+    if keys[pygame.K_UP]:
+        platform.throw_ball()
+
     for block in [*blocks, platform]:
         for ball in [*balls]:
             if check_collision(block, ball):
@@ -71,11 +73,6 @@ def update_elements(windows, balls, blocks, platform):
             windows.remove_element(ball)
         elif ball.position.y < 0:
             ball.direction.y *= -1
-
-    if (platform.position.x + platform.dimension.x) >= windows.dimension.x:
-        platform.position.x = windows.dimension.x - platform.dimension.x
-    elif platform.position.x < 0:
-        platform.position.x = 0
 
     if balls.__len__() == 0:
         ball = generate_ball()
@@ -103,7 +100,7 @@ def generate_bloc(window_size: Vector):
 def generate_platform(window_size: Vector, ball):
     platform = Platform(dimension=Dimension(120, 15), ball=ball)
     platform.select_platform(PlatformType.animate1)
-    platform.set_speed(1)
+    platform.set_speed(0.5)
 
     platform.set_position(window_size.x / 2 - platform.get_width() / 2, window_size.y - 2 * platform.get_height())
     return platform
