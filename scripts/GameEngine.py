@@ -24,8 +24,7 @@ class GameEngine:
             balls.append(generate_ball())
 
         blocks = []
-        for x in range(100):
-            blocks.append(generate_bloc(self.windows.dimension))
+        blocks = generate_bloc(self.windows.dimension)
 
         platform = generate_platform(self.windows.dimension, balls[0])
         self.windows.add_element(*balls, *blocks, platform)
@@ -60,9 +59,7 @@ def update_elements(windows, balls, blocks, platform):
     for block in [*blocks]:
         for ball in [*balls]:
             if check_collision(block, ball) is True:
-                print("collision1")
                 if check_external_collider(block, ball):
-                    print("colision2")
                     blocks.remove(block)
                     windows.remove_element(block)
                     break
@@ -100,11 +97,14 @@ def generate_ball():
 
 
 def generate_bloc(window_size: Vector):
-    block = Block(dimension=Dimension(60, 20))
-    block.select_bloc(BlockType.b1)
-
-    block.set_position(randrange(0, 780), randrange(0, 300))
-    return block
+    blocks = []
+    for y in range(10):
+        for x in range(10):
+            block = Block(dimension=Dimension(-2 + window_size.x / 10, 18))
+            block.select_bloc(BlockType.b1)
+            block.set_position(2 + (x * (window_size.x - 2) / 10), y * 20 + 2)
+            blocks.append(block)
+    return blocks
 
 
 def generate_platform(window_size: Vector, ball):
