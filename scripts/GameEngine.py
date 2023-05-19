@@ -24,7 +24,7 @@ class GameEngine:
             balls.append(generate_ball())
 
         blocks = []
-        for x in range(0):
+        for x in range(100):
             blocks.append(generate_bloc(self.windows.dimension))
 
         platform = generate_platform(self.windows.dimension, balls[0])
@@ -57,10 +57,20 @@ def update_elements(windows, balls, blocks, platform):
     if keys[pygame.K_UP]:
         platform.throw_ball()
 
-    for block in [*blocks, platform]:
+    for block in [*blocks]:
         for ball in [*balls]:
-            if check_collision(block, ball):
-                check_external_collider(block, ball)
+            if check_collision(block, ball) is True:
+                print("collision1")
+                if check_external_collider(block, ball):
+                    print("colision2")
+                    blocks.remove(block)
+                    windows.remove_element(block)
+                    break
+
+    for ball in [*balls]:
+        if check_collision(platform, ball) is True:
+            if check_external_collider(platform, ball):
+                break
 
     for ball in balls:
         if (ball.position.x + ball.dimension.x) >= windows.dimension.x:
@@ -82,7 +92,7 @@ def update_elements(windows, balls, blocks, platform):
 
 
 def generate_ball():
-    raio = 30
+    raio = 20
     ball = Ball(dimension=Dimension(raio, raio))
     ball.select_ball(BallType.basic_white)
     ball.speed_max = 0.5
@@ -90,10 +100,10 @@ def generate_ball():
 
 
 def generate_bloc(window_size: Vector):
-    block = Block(dimension=Dimension(20, 20))
+    block = Block(dimension=Dimension(60, 20))
     block.select_bloc(BlockType.b1)
 
-    block.set_position(random() * window_size.x - 100, random() * window_size.y - 100)
+    block.set_position(randrange(0, 780), randrange(0, 300))
     return block
 
 

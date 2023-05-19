@@ -39,13 +39,13 @@ def check_external_collider(bloc: Element, ball: Ball):
             ball.direction.x *= -1
             ball.direction.y += bloc.direction.y * 0.25
 
-        return collider
+        return True
 
     elif intersection_area.__len__() == 2:
         collider = collide_corner(bloc, ball, intersection_area)
 
         if collider:
-            return collider
+            return True
 
 
 def collide_corner(bloc: Element, ball: Ball, intersection_area):
@@ -83,8 +83,8 @@ def collide_corner(bloc: Element, ball: Ball, intersection_area):
                 collider = "Top/Left"
 
     if collider:
-        get_direction_result(ball, corner)
-        return collider
+        set_direction_result(ball, corner)
+        return True
 
 
 def distance_between(point1: Vector, point2: Vector):
@@ -97,7 +97,7 @@ def distance_between(point1: Vector, point2: Vector):
     return distance
 
 
-def get_direction_result(ball: Ball, corner: Vector):
+def set_direction_result(ball: Ball, corner: Vector):
     direction_x = (ball.get_center().x - corner.x) / ball.get_radius()
     direction_y = (ball.get_center().y - corner.y) / ball.get_radius()
     direction = Vector(direction_x, direction_y)
