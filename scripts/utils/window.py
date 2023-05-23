@@ -1,12 +1,9 @@
-from tkinter import StringVar, Radiobutton, Tk
 import pygame
-from configs import configs
-from scripts.models.Element import Element
-from scripts.utils.Dimension import Dimension
+from scripts.utils.vector import Vector
 
 
 class Window:
-    def __init__(self, instance, title: str, dimension: Dimension):
+    def __init__(self, instance, title: str, dimension: Vector):
         self.title = title
         self.dimension = dimension
 

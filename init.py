@@ -1,4 +1,4 @@
-from scripts.GameEngine import GameEngine
+from scripts.game_engine import GameEngine
 
 
 def init():
