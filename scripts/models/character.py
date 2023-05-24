@@ -16,7 +16,7 @@ class Character(Body, Movement):
     def __str__(self):
         Body.__str__(self)
         Movement.__str__(self)
-        return (f"Element [ "
+        return (f"Character [ "
                 f"{Body.__str__(self)} "
                 f"{Movement.__str__(self)} "
                 f"]"
