@@ -9,16 +9,16 @@ class Vector:
         self._y = y
 
     def get_angle(self):
-        angle_radius = math.atan2(self._y, self._x)
+        angle_radius = math.atan2(self.y, self.x)
         angle_degrees = math.degrees(angle_radius)
         return angle_degrees
 
     def get_geometry(self):
-        return f"{self._x}x{self._y}"
+        return f"{self.x}x{self.y}"
 
     def multiplication_by(self, module):
-        self._x *= module
-        self._y *= module
+        self.x *= module
+        self.y *= module
 
     @property
     def x(self):
@@ -37,17 +37,17 @@ class Vector:
         self._y = y
 
     def __add__(self, other):
-        x = self._x + other.x
-        y = self._y + other.y
+        x = self.x + other.x
+        y = self.y + other.y
         return Vector(x, y)
 
     def __sub__(self, other):
-        x = self._x - other.x
-        y = self._y - other.y
+        x = self.x - other.x
+        y = self.y - other.y
         return Vector(x, y)
 
-    def __mul__(self, module):
-        return Vector(self._x * module, self._y * module)
+    def __mul__(self, other):
+        return Vector(self.x * other.x, self.y * other.y)
 
     def __str__(self):
-        return f"Vector [ x={self._x}, y={self._y} ]"
+        return f"Vector [ x={self.x}, y={self.y} ]"

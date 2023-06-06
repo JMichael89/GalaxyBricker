@@ -12,9 +12,17 @@ class BlockType(Enum):
 
 
 class Block(Character, SelectionCharacterMixin(BlockType).mixin, Interactions):
+    def __init__(self):
+        super().__init__()
+        self.life = 1
+
     def select_bloc(self, style: Enum):
+        self.life = 100
         image = pygame.image.load("files/graphics/characters/"+style.value)
         self.update_image(image)
 
-    def check_hit(self, ball):
-        return self.check_collision(self, ball)
+    def check_hit(self):
+        self.life -= 1
+        if self.life <= 0:
+            return True
+

@@ -10,14 +10,14 @@ class PlatformType(Enum):
 
 
 class Platform(Character, SelectionCharacterMixin(PlatformType).mixin, Interactions):
-    def __init__(self,):
+    def __init__(self, ):
         Character.__init__(self)
         Interactions.__init__(self)
 
-    def move_to_left(self):
-        if self._validate_move_to_left():
+    def move_to_left(self, window_size):
+        if self.position.x > 0:
             self.direction.x = -1
 
-    def move_to_right(self):
-        if self._validate_move_to_right():
+    def move_to_right(self, window_size):
+        if self.position.x + self.get_width() < window_size.x:
             self.direction.x = 1

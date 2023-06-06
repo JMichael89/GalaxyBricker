@@ -1,3 +1,6 @@
-from scripts.models.interactions import Interactions
+from scripts.characters.ball import Ball
 
-mov = Interactions()
+ball = Ball()
+ball.set_direction(2, 2)
+
+print(ball.direction)
