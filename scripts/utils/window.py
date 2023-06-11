@@ -1,26 +1,48 @@
 import pygame
-from scripts.utils.vector import Vector
+
+from scripts.models.character import Character
+from scripts.utils.animation import Animation
 
 
 class Window:
-    def __init__(self, instance, title: str, dimension: Vector):
+    def __init__(self, instance, title: str, width, height):
         self.title = title
-        self.dimension = dimension
+        self.width = width
+        self.height = height
 
         self.display = instance.display
-        self.paint = self.display.set_mode((dimension.x, dimension.y))
+        self.screen = self.display.set_mode((width, height))
         pygame.display.set_caption("Galaxy Bricker")
         self.elements = []
 
     def update(self):
-        self.paint.fill((0, 0, 0))
-
+        self.screen.fill((0, 0, 0))
         for element in self.elements:
-            if element.image is not None:
-                element.update()
-                self.paint.blit(element.image, (element.position.x, element.position.y))
+            if isinstance(element, Character):
+                if element.image is not None:
+                    element.update()
+                    self.screen.blit(element.image, (element.position.x, element.position.y))
 
-        self.display.flip()
+            elif isinstance(element, Animation):
+                self.screen.blit(element.frame, (element.position.x, element.position.y))
+
+            self.display.update()
+            self.display.flip()
+
+    def fade_transition(self, clock):
+        fade_img = pygame.Surface((self.width, self.height)).convert_alpha()
+        fade = fade_img.get_rect()
+        fade_img.fill("black")
+        fade_alpha = 0
+
+        while True:
+            fade_alpha += 10
+            fade_img.set_alpha(fade_alpha)
+            self.screen.blit(fade_img, fade)
+            clock.tick(20)
+            self.display.flip()
+            if fade_alpha >= 255:
+                break
 
     def add_element(self, *elements):
         for element in elements:
@@ -29,3 +51,6 @@ class Window:
     def remove_element(self, *elements):
         for element in elements:
             self.elements.remove(element)
+
+    def restart(self):
+        self.elements.clear()

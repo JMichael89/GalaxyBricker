@@ -1,10 +1,10 @@
-from scripts.models.body import Body
+from scripts.models.element import Element
 from scripts.models.movement import Movement
 
 
-class Character(Body, Movement):
+class Character(Element, Movement):
     def __init__(self):
-        Body.__init__(self)
+        Element.__init__(self)
         Movement.__init__(self)
 
     def update(self):
@@ -14,10 +14,10 @@ class Character(Body, Movement):
             self.position.y += self.speed * self.direction.y
 
     def __str__(self):
-        Body.__str__(self)
+        Element.__str__(self)
         Movement.__str__(self)
         return (f"Character [ "
-                f"{Body.__str__(self)} "
+                f"{Element.__str__(self)} "
                 f"{Movement.__str__(self)} "
                 f"]"
                 )
