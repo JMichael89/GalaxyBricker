@@ -1,6 +1,7 @@
 import pygame
 
 from scripts.models.character import Character
+from scripts.models.text_view import TextView
 from scripts.utils.animation import Animation
 
 
@@ -26,8 +27,10 @@ class Window:
             elif isinstance(element, Animation):
                 self.screen.blit(element.frame, (element.position.x, element.position.y))
 
-            self.display.update()
-            self.display.flip()
+            elif isinstance(element, TextView):
+                self.screen.blit(element.surface, element.rect)
+
+        self.display.update()
 
     def fade_transition(self, clock):
         fade_img = pygame.Surface((self.width, self.height)).convert_alpha()
@@ -50,7 +53,8 @@ class Window:
 
     def remove_element(self, *elements):
         for element in elements:
-            self.elements.remove(element)
+            if element in self.elements:
+                self.elements.remove(element)
 
     def restart(self):
         self.elements.clear()

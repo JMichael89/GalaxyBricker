@@ -19,7 +19,7 @@ class Interactions:
         return True
 
     @staticmethod
-    def calculate_result_direction(ball, block):
+    def _calculate_result_direction(ball, block):
         distance_x = ball.get_center().x - block.get_center().x
         distance_y = ball.get_center().y - block.get_center().y
 
@@ -52,5 +52,17 @@ class Interactions:
 
         elif collision_top_down:
             ball.direction.y *= -1
+
+        return ball.direction.x, ball.direction.y
+
+    @staticmethod
+    def calculate_result_direction2(ball, block):
+        distance_x = ball.position.x - block.position.x
+        distance_y = ball.position.y - block.position.y
+        porc_x = distance_x / block.get_width()
+        porc_y = distance_y / block.get_height()
+
+        print("x = ", porc_x)
+        print("y = ", porc_y)
 
         return ball.direction.x, ball.direction.y

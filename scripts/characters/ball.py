@@ -15,8 +15,11 @@ class Ball(Character, SelectionCharacterMixin(BallType).mixin, Interactions):
         self._was_thrown = False
         super().__init__()
 
+    def calculate_result_direction(self, element):
+        self._calculate_result_direction(self, element)
+
     def check_collider_by_window(self, window):
-        if self.position.x <= 0 or self.position.x + self.get_width() >= window.dimension.x:
+        if self.position.x <= 0 or self.position.x + self.get_width() >= window.width:
             self.direction *= Vector(-1, 1)
 
         if self.position.y <= 0:
@@ -26,7 +29,7 @@ class Ball(Character, SelectionCharacterMixin(BallType).mixin, Interactions):
         return self._check_collision(self, element)
 
     def check_die(self, window):
-        return self.position.y >= window.dimension.y
+        return self.position.y >= window.height
 
     def get_radius(self):
         return self.dimension.x / 2

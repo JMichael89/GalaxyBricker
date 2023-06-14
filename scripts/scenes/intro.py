@@ -6,10 +6,10 @@ from scripts.utils.vector import Vector
 from scripts.utils.window import Window
 
 
-class Menu:
+class Intro:
     @staticmethod
-    def show_menu(window: Window, clock):
-        Menu._opening(window, clock)
+    def show(window: Window, clock):
+        Intro._opening(window, clock)
 
         logo = Animation("files/graphics/logo/logo4.gif")
         logo.dimension = Vector(window.width, window.height)
@@ -22,7 +22,7 @@ class Menu:
         window.add_element(start)
 
         while True:
-            if Menu._listen_keyboard():
+            if Intro._listen_keyboard():
                 window.fade_transition(clock)
                 window.restart()
                 break
@@ -59,7 +59,7 @@ class Menu:
         window.add_element(logo_animate)
 
         while True:
-            if Menu._listen_keyboard():
+            if Intro._listen_keyboard():
                 window.restart()
                 break
 

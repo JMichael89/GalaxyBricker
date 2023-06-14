@@ -14,10 +14,10 @@ class Platform(Character, SelectionCharacterMixin(PlatformType).mixin, Interacti
         Character.__init__(self)
         Interactions.__init__(self)
 
-    def move_to_left(self, window_size):
+    def move_to_left(self, width):
         if self.position.x > 0:
             self.direction.x = -1
 
-    def move_to_right(self, window_size):
-        if self.position.x + self.get_width() < window_size.x:
+    def move_to_right(self, width):
+        if self.position.x + self.get_width() < width:
             self.direction.x = 1
