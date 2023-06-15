@@ -6,10 +6,15 @@ from scripts.utils.vector import Vector
 
 
 class Movement:
-    def __init__(self, direction: Optional[Vector] = None, speed: Optional[numbers] = 0,
-                 speed_max: Optional[numbers] = 0, speed_min: Optional[numbers] = 0):
+    def __init__(self, direction: Optional[Vector] = None, speed: Optional[numbers] = 0):
         self._direction = direction if direction else Vector()
         self._speed = speed if speed else 0
+
+    def update(self):
+        has_speed = self.speed > 0
+        if has_speed:
+            self.position.x += self.speed * self.direction.x
+            self.position.y += self.speed * self.direction.y
 
     @property
     def speed(self):

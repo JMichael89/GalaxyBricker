@@ -7,12 +7,6 @@ class Character(Element, Movement):
         Element.__init__(self)
         Movement.__init__(self)
 
-    def update(self):
-        has_speed = self.speed > 0
-        if has_speed:
-            self.position.x += self.speed * self.direction.x
-            self.position.y += self.speed * self.direction.y
-
     def __str__(self):
         Element.__str__(self)
         Movement.__str__(self)

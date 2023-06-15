@@ -5,7 +5,6 @@ import pygame
 from scripts.characters.ball import Ball, BallType
 from scripts.characters.block import Block, BlockType
 from scripts.characters.platform import Platform, PlatformType
-from scripts.utils.window import Window
 
 
 class GamePlay:
@@ -32,6 +31,7 @@ class GamePlay:
             if self._listen_keyboard():
                 return
             if len(self.blocks) == 0:
+                self.ball.speed = 0
                 return
 
             self.update_elements()
@@ -78,6 +78,7 @@ class GamePlay:
             self.ball.direction.x += self.platform.direction.x * 0.25 * self.platform.speed
             aux = -(((self.platform.position.x - self.ball.get_center().x) / self.platform.get_width()) + 0.5)
             self.ball.direction.x = aux
+            self.ball.direction.y = -1
             self.ball.position.y -= 5
 
         self.ball.check_collider_by_window(self.window)
