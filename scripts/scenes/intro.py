@@ -30,8 +30,8 @@ class Intro:
             if not start.update_frame():
                 window.remove_element(start)
                 start = Animation("files/graphics/logo/start_f.gif")
-                start.dimension = Vector(window.width, window.height)
-                start.position = Vector(0, -100)
+                start.set_dimension(window.width, window.height)
+                start.set_position(0, -100)
                 window.add_element(start)
 
             logo.update_frame()

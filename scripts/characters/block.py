@@ -8,7 +8,7 @@ from scripts.utils.mixins.selection_character import SelectionCharacterMixin
 
 
 class BlockType(Enum):
-    b1 = "bloc.png"
+    b1 = "block_cinza.gif"
 
 
 class Block(Character, SelectionCharacterMixin(BlockType).mixin, Interactions):
@@ -23,6 +23,7 @@ class Block(Character, SelectionCharacterMixin(BlockType).mixin, Interactions):
 
     def hit(self, hit):
         self.life -= hit
+        self.animation.update_frame()
         if self.life <= 0:
             return True
 

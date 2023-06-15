@@ -18,8 +18,8 @@ class Animation(Element):
 
         self.nframe = 0
         self.current_frame = 0
-        self._frame = self.pil_to_game(self.get_gif_frame(self.gif_img, self.current_frame))
         self.continuos = True
+        self.update_frame()
 
     def update_gif(self, path_to_image, dimension=None):
         self.__init__(path_to_image, dimension)

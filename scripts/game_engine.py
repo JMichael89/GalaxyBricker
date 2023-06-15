@@ -11,7 +11,7 @@ from scripts.utils.window import Window
 class GameEngine:
     def __init__(self):
         pygame.init()
-        self.windows = Window(pygame, "Galaxy Bricker", 500, 500)
+        self.windows = Window(pygame, "Galaxy Bricker", 600, 600)
         self.clock = pygame.time.Clock()
 
     def run(self):

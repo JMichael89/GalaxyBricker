@@ -149,6 +149,7 @@ class GamePlay:
         block.set_position(x, y)
         block.set_dimension(width, height)
         block.select_character(BlockType.b1)
+        block.life = 4
 
         return block
 
