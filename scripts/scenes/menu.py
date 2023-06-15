@@ -16,11 +16,10 @@ class Menu:
         self.selection = 0
 
     def show(self):
-        self.point = TextView(">", "Arial", 40, (0, 255, 0))
-        self.point.set_position(75, 50)
-
         self.options = self.create_options()
 
+        self.point = TextView(">", "Arial", int(self.window.width * 0.05), (0, 255, 0))
+        self.update_selection_position()
         self.window.add_element(self.point, *self.options)
 
         while True:
@@ -45,16 +44,15 @@ class Menu:
                     sys.exit()
                 elif event.key == pygame.K_UP:
                     self.update_selection(-1)
-                    self.clock.tick(50)
+
                 elif event.key == pygame.K_DOWN:
                     self.update_selection(1)
-                    self.clock.tick(50)
 
     def create_options(self):
         options = []
         for i in range(len(levels)):
-            option1 = TextView(levels[i]["name"], "Arial", 40, (0, 255, 0))
-            option1.set_position(100, (i+1)*50)
+            option1 = TextView(levels[i]["name"], "Arial", int(self.window.height * 0.05), (0, 255, 0))
+            option1.set_position(int(self.window.height * 0.1), (i+1)*int(self.window.height * 0.05))
             options.append(option1)
 
         return options
@@ -67,4 +65,4 @@ class Menu:
         self.update_selection_position()
 
     def update_selection_position(self):
-        self.point.set_position(75, self.options[self.selection].position.y)
+        self.point.set_position(int(self.window.height * 0.05), self.options[self.selection].position.y)

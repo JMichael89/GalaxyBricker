@@ -5,11 +5,13 @@ import pygame
 from scripts.characters.ball import Ball, BallType
 from scripts.characters.block import Block, BlockType
 from scripts.characters.platform import Platform, PlatformType
+from scripts.models.text_view import TextView
 
 
 class GamePlay:
 
     def __init__(self, window, clock, level):
+        self.life = 3
         self.ball = None
         self.blocks = []
         self.platform = None
@@ -17,8 +19,14 @@ class GamePlay:
         self.clock = clock
         self.window = window
 
+        self.win = TextView("Win", "Arial", int(self.window.width * 0.075), (0, 255, 0))
+        self.win.set_position(int(self.window.width * 0.45), int(self.window.height * 0.8))
+
+        self.lose = TextView("Lose", "Arial", int(self.window.width * 0.075), (0, 255, 0))
+        self.lose.set_position(int(self.window.width * 0.45), int(self.window.height * 0.8))
+
     def init(self):
-        self.ball = self.generate_ball()
+        self.ball = self.generate_ball(self.window.width, self.window.height)
         self.platform = self.generate_platform(self.window.width, self.window.height)
         self.blocks = []
         self.blocks = self.generate_blocks()
@@ -31,7 +39,14 @@ class GamePlay:
             if self._listen_keyboard():
                 return
             if len(self.blocks) == 0:
+                # Ganhou
                 self.ball.speed = 0
+                self.window.add_element(self.win)
+                return
+            if self.life == 0:
+                # Perdeu
+                self.ball.speed = 0
+                self.window.add_element(self.lose)
                 return
 
             self.update_elements()
@@ -85,9 +100,10 @@ class GamePlay:
 
         if self.ball.check_die(self.window):
             self.window.remove_element(self.ball)
-            self.ball = self.generate_ball()
+            self.ball = self.generate_ball(self.window.width, self.window.height)
             self.window.add_element(self.ball)
             self.put_ball_in_platform()
+            self.life -= 1
 
     def throw_ball(self):
         if not self.ball.was_thrown:
@@ -97,25 +113,25 @@ class GamePlay:
     @staticmethod
     def generate_platform(window_width, window_height):
         platform = Platform()
-        platform.set_dimension(150, 20)
+        platform.set_dimension(window_width * 0.2, window_height * 0.025)
         platform.select_character(PlatformType.animate1)
-        platform.speed = 0.8
+        platform.speed = 0.5
 
-        platform.set_position(window_width / 2 - platform.get_width() / 2, window_height - 7.5 * platform.get_height())
+        platform.set_position(window_width / 2 - platform.get_width() / 2, window_height * 0.9)
         return platform
 
     @staticmethod
-    def generate_ball():
-        raio = 25
+    def generate_ball(window_width, window_height):
+        raio = window_height * 0.025
         ball = Ball()
         ball.set_dimension(raio, raio)
         ball.select_character(BallType.basic_white)
-        ball.speed = 0.8
+        ball.speed = 0.5
         return ball
 
     def generate_blocks(self):
         block_width = self.window.width / len(self.level[0])
-        block_height = 25
+        block_height = self.window.height * 0.04
         blocks = []
         for i in range(len(self.level)):
             for j in range(len(self.level[i])):
@@ -132,7 +148,6 @@ class GamePlay:
         block.set_position(x, y)
         block.set_dimension(width, height)
         block.select_character(BlockType.b1)
-        block.life = 1
 
         return block
 
