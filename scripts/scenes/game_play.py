@@ -49,6 +49,7 @@ class GamePlay:
                 self.window.add_element(self.lose)
                 return
 
+            self.clock.tick(int(600 * self.window.width/1000))
             self.update_elements()
             self.window.update()
 
@@ -115,7 +116,7 @@ class GamePlay:
         platform = Platform()
         platform.set_dimension(window_width * 0.2, window_height * 0.025)
         platform.select_character(PlatformType.animate1)
-        platform.speed = 0.5
+        platform.speed = 0.8
 
         platform.set_position(window_width / 2 - platform.get_width() / 2, window_height * 0.9)
         return platform
@@ -126,7 +127,7 @@ class GamePlay:
         ball = Ball()
         ball.set_dimension(raio, raio)
         ball.select_character(BallType.basic_white)
-        ball.speed = 0.5
+        ball.speed = 0.8
         return ball
 
     def generate_blocks(self):
