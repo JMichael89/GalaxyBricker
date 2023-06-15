@@ -39,7 +39,7 @@ class Window:
         fade_alpha = 0
 
         while True:
-            fade_alpha += 10
+            fade_alpha += 15
             fade_img.set_alpha(fade_alpha)
             self.screen.blit(fade_img, fade)
             clock.tick(20)

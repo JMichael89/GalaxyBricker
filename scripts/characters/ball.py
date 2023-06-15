@@ -1,7 +1,7 @@
 from enum import Enum
 
 from scripts.models.character import Character
-from scripts.models.interactions import Interactions
+from scripts.utils.interactions import Interactions
 from scripts.utils.mixins.selection_character import SelectionCharacterMixin
 from scripts.utils.vector import Vector
 
@@ -13,10 +13,11 @@ class BallType(Enum):
 class Ball(Character, SelectionCharacterMixin(BallType).mixin, Interactions):
     def __init__(self):
         self._was_thrown = False
+        self.power = 1
         super().__init__()
 
     def calculate_result_direction(self, element):
-        self._calculate_result_direction(self, element)
+        return self._calculate_result_direction(self, element)
 
     def check_collider_by_window(self, window):
         if self.position.x <= 0 or self.position.x + self.get_width() >= window.width:

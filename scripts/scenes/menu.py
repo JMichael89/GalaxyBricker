@@ -3,6 +3,7 @@ import sys
 import pygame
 
 from scripts.models.text_view import TextView
+from scripts.utils.levels import levels
 from scripts.utils.window import Window
 
 
@@ -18,25 +19,7 @@ class Menu:
         self.point = TextView(">", "Arial", 40, (0, 255, 0))
         self.point.set_position(75, 50)
 
-        option1 = TextView("Level 1", "Arial", 40, (0, 255, 0))
-        option1.set_position(100, 50)
-        self.options.append(option1)
-
-        option2 = TextView("Level 2", "Arial", 40, (0, 255, 0))
-        option2.set_position(100, 100)
-        self.options.append(option2)
-
-        option3 = TextView("Level 3", "Arial", 40, (0, 255, 0))
-        option3.set_position(100, 150)
-        self.options.append(option3)
-
-        option4 = TextView("Level 4", "Arial", 40, (0, 255, 0))
-        option4.set_position(100, 200)
-        self.options.append(option4)
-
-        option5 = TextView("Level 5", "Arial", 40, (0, 255, 0))
-        option5.set_position(100, 250)
-        self.options.append(option5)
+        self.options = self.create_options()
 
         self.window.add_element(self.point, *self.options)
 
@@ -44,7 +27,7 @@ class Menu:
             if self._listen_keyboard():
                 self.window.fade_transition(self.clock)
                 self.window.restart()
-                return self.selection + 1
+                return self.selection
 
             self.clock.tick(5)
             self.window.update()
@@ -66,6 +49,15 @@ class Menu:
                 elif event.key == pygame.K_DOWN:
                     self.update_selection(1)
                     self.clock.tick(50)
+
+    def create_options(self):
+        options = []
+        for i in range(len(levels)):
+            option1 = TextView(levels[i]["name"], "Arial", 40, (0, 255, 0))
+            option1.set_position(100, (i+1)*50)
+            options.append(option1)
+
+        return options
 
     def update_selection(self, acrescent):
         self.selection += acrescent

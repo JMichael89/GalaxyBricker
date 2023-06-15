@@ -16,7 +16,7 @@ class Interactions:
             return False
         if (e1.position.y + e1.dimension.y) <= e2.position.y or e1.position.y >= (e2.position.y + e2.dimension.y):
             return False
-        return True
+        return Interactions._calculate_result_direction(e1, e2)
 
     @staticmethod
     def _calculate_result_direction(ball, block):
@@ -45,24 +45,21 @@ class Interactions:
 
                 direction_x = -2 * dot_product * normal_x
                 direction_y = -2 * dot_product * normal_y
+
                 ball.direction += Vector(direction_x, direction_y)
+
+                if 0 >= ball.direction.y >= -0.1:
+                    ball.direction.y = -0.1
+                elif 0 <= ball.direction.y <= 0.1:
+                    ball.direction.y = 0.1
+                return True
 
         elif collision_side:
             ball.direction.x *= -1
+            return True
 
         elif collision_top_down:
             ball.direction.y *= -1
+            return True
 
-        return ball.direction.x, ball.direction.y
-
-    @staticmethod
-    def calculate_result_direction2(ball, block):
-        distance_x = ball.position.x - block.position.x
-        distance_y = ball.position.y - block.position.y
-        porc_x = distance_x / block.get_width()
-        porc_y = distance_y / block.get_height()
-
-        print("x = ", porc_x)
-        print("y = ", porc_y)
-
-        return ball.direction.x, ball.direction.y
+        return False

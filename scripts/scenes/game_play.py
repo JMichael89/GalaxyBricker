@@ -31,6 +31,8 @@ class GamePlay:
         while game_is_active:
             if self._listen_keyboard():
                 return
+            if len(self.blocks) == 0:
+                return
 
             self.update_elements()
             self.window.update()
@@ -42,30 +44,9 @@ class GamePlay:
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
-            elif event.key == pygame.K_ESCAPE:
-                return True
-            elif event.key == pygame.K_LEFT:
-                self.platform.move_to_left(self.window.width)
-                self.put_ball_in_platform()
 
-            elif event.key == pygame.K_RIGHT:
-                self.platform.move_to_right(self.window.width)
-                self.put_ball_in_platform()
-
-            elif event.key == pygame.K_UP:
-                self.throw_ball()
-
-            elif event.key == pygame.K_DOWN:
-                self.ball.was_thrown = False
-                self.ball.direction.multiplication_by(0)
-                self.put_ball_in_platform()
-    def update_elements(self):
-        keys = pygame.key.get_pressed()
         self.platform.direction.x = 0
-
-        if keys[pygame.K_ESCAPE]:
-            return True
-
+        keys = pygame.key.get_pressed()
         if keys[pygame.K_LEFT]:
             self.platform.move_to_left(self.window.width)
             self.put_ball_in_platform()
@@ -82,17 +63,22 @@ class GamePlay:
             self.ball.direction.multiplication_by(0)
             self.put_ball_in_platform()
 
+        elif keys[pygame.K_ESCAPE]:
+            return True
+
+    def update_elements(self):
         for block in self.blocks:
             if self.ball.check_collide(block):
-                self.ball.calculate_result_direction(block)
-                if block.check_hit():
+                if block.hit(self.ball.power):
                     self.blocks.remove(block)
                     self.window.remove_element(block)
                     del block
 
         if self.ball.check_collide(self.platform):
-            self.ball.direction.y *= -1
-            self.ball.direction.x += self.platform.direction.x * 0.25
+            self.ball.direction.x += self.platform.direction.x * 0.25 * self.platform.speed
+            aux = -(((self.platform.position.x - self.ball.get_center().x) / self.platform.get_width()) + 0.5)
+            self.ball.direction.x = aux
+            self.ball.position.y -= 5
 
         self.ball.check_collider_by_window(self.window)
 
@@ -110,26 +96,25 @@ class GamePlay:
     @staticmethod
     def generate_platform(window_width, window_height):
         platform = Platform()
-        platform.set_dimension(120, 15)
+        platform.set_dimension(150, 20)
         platform.select_character(PlatformType.animate1)
-        platform.speed = 1
+        platform.speed = 0.8
 
-        platform.set_position(window_width / 2 - platform.get_width() / 2, window_height - 2 * platform.get_height())
+        platform.set_position(window_width / 2 - platform.get_width() / 2, window_height - 7.5 * platform.get_height())
         return platform
 
     @staticmethod
     def generate_ball():
-        raio = 20
+        raio = 25
         ball = Ball()
         ball.set_dimension(raio, raio)
         ball.select_character(BallType.basic_white)
-        ball.speed = 1
+        ball.speed = 0.8
         return ball
 
     def generate_blocks(self):
-        print("generate_blocks")
-        block_width = self.window.width / 10
-        block_height = 20
+        block_width = self.window.width / len(self.level[0])
+        block_height = 25
         blocks = []
         for i in range(len(self.level)):
             for j in range(len(self.level[i])):
@@ -146,6 +131,7 @@ class GamePlay:
         block.set_position(x, y)
         block.set_dimension(width, height)
         block.select_character(BlockType.b1)
+        block.life = 1
 
         return block
 

@@ -1,7 +1,7 @@
 from enum import Enum
 
 from scripts.models.character import Character
-from scripts.models.interactions import Interactions
+from scripts.utils.interactions import Interactions
 from scripts.utils.mixins.selection_character import SelectionCharacterMixin
 
 

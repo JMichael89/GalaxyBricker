@@ -3,7 +3,7 @@ from enum import Enum
 import pygame
 
 from scripts.models.character import Character
-from scripts.models.interactions import Interactions
+from scripts.utils.interactions import Interactions
 from scripts.utils.mixins.selection_character import SelectionCharacterMixin
 
 
@@ -21,8 +21,8 @@ class Block(Character, SelectionCharacterMixin(BlockType).mixin, Interactions):
         image = pygame.image.load("files/graphics/characters/"+style.value)
         self.update_image(image)
 
-    def check_hit(self):
-        self.life -= 1
+    def hit(self, hit):
+        self.life -= hit
         if self.life <= 0:
             return True
 
