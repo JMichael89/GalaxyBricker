@@ -41,15 +41,18 @@ class GamePlay:
             if len(self.blocks) == 0:
                 # Ganhou
                 self.ball.speed = 0
+                self.platform.speed = 0
                 self.window.add_element(self.win)
                 return
             if self.life == 0:
                 # Perdeu
                 self.ball.speed = 0
+                self.platform.speed = 0
                 self.window.add_element(self.lose)
                 return
 
             self.clock.tick(int(600 * self.window.width/1000))
+            print(self.clock.get_fps())
             self.update_elements()
             self.window.update()
 
@@ -116,7 +119,7 @@ class GamePlay:
         platform = Platform()
         platform.set_dimension(window_width * 0.2, window_height * 0.025)
         platform.select_character(PlatformType.animate1)
-        platform.speed = 0.8
+        platform.speed = 1.5
 
         platform.set_position(window_width / 2 - platform.get_width() / 2, window_height * 0.9)
         return platform
@@ -127,7 +130,7 @@ class GamePlay:
         ball = Ball()
         ball.set_dimension(raio, raio)
         ball.select_character(BallType.basic_white)
-        ball.speed = 0.8
+        ball.speed = 1.5
         return ball
 
     def generate_blocks(self):

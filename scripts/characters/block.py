@@ -9,6 +9,7 @@ from scripts.utils.mixins.selection_character import SelectionCharacterMixin
 
 class BlockType(Enum):
     b1 = "block_cinza.gif"
+    gif = "block_cinza.gif"
 
 
 class Block(Character, SelectionCharacterMixin(BlockType).mixin, Interactions):

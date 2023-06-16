@@ -24,7 +24,7 @@ class Window:
                     element.update()
                     self.screen.blit(element.image, (element.position.x, element.position.y))
                 elif element.animation is not None:
-                    self.screen.blit(element.animation.frame, (element.animation.position.x, element.animation.position.y))
+                    self.screen.blit(element.animation.frame, (element.position.x, element.position.y))
 
             elif isinstance(element, Animation):
                 self.screen.blit(element.frame, (element.position.x, element.position.y))
